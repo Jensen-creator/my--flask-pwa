@@ -2,32 +2,40 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Cart</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <header>
         <h1>Your Shopping Cart</h1>
-        <a href="{{ url_for('index') }}" class="cart-button">← Back to Shop</a>
+        <a href="{{ url_for('index') }}" class="cart-button">← Continue Shopping</a>
     </header>
 
     <main class="cart-page">
         {% if cart_items %}
-        <ul>
+        <div class="cart-grid">
             {% for item in cart_items %}
-            <li>
+            <div class="cart-card">
                 {% if item[3] %}
-                <img src="{{ url_for('static', filename='uploads/' ~ item[3]) }}" alt="{{ item[1] }}" width="100">
+                <img src="{{ url_for('static', filename='uploads/' ~ item[3]) }}" alt="{{ item[1] }}">
+                {% else %}
+                <img src="{{ url_for('static', filename='uploads/default.png') }}" alt="No Image">
                 {% endif %}
-                <span>{{ item[1] }} - ${{ "%.2f"|format(item[2]) }}</span>
-                <a href="{{ url_for('remove_from_cart', item_id=item[0]) }}" class="remove">Remove</a>
-            </li>
+                <div class="cart-details">
+                    <h3>{{ item[1] }}</h3>
+                    <p class="price">${{ "%.2f"|format(item[2]) }}</p>
+                    <a href="{{ url_for('remove_from_cart', item_id=item[0]) }}" class="remove-button">Remove</a>
+                </div>
+            </div>
             {% endfor %}
-        </ul>
-        <h3>Total: ${{ "%.2f"|format(total) }}</h3>
+        </div>
+        <div class="cart-total">
+            <h2>Total: ${{ "%.2f"|format(total) }}</h2>
+            <button class="checkout-button">Proceed to Checkout</button>
+        </div>
         {% else %}
-        <p>Your cart is empty.</p>
+        <p class="empty-cart">Your cart is empty.</p>
         {% endif %}
     </main>
 </body>
