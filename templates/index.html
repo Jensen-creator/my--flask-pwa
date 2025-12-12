@@ -6,6 +6,13 @@
 </head>
 <body>
     <h1>Mini Shop</h1>
+
+    <!-- Search bar -->
+    <form method="GET" style="margin-bottom: 20px;">
+        <input type="text" name="search" placeholder="Search items..." value="{{ request.args.get('search') }}">
+        <button type="submit">Search</button>
+    </form>
+
     <div class="container">
         <!-- Items for Sale -->
         <div>
@@ -13,18 +20,25 @@
             <ul>
                 {% for item in items %}
                 <li>
-                    {{ item[1] }} - ${{ "%.2f"|format(item[2]) }}
-                    <a href="/?add_to_cart={{ item[0] }}">Add to Cart</a>
+                    {% if item[3] %}
+                    <img src="{{ url_for('static', filename='uploads/' ~ item[3]) }}" alt="{{ item[1] }}" width="100">
+                    {% endif %}
+                    <div>
+                        <strong>{{ item[1] }}</strong><br>
+                        ${{ "%.2f"|format(item[2]) }}<br>
+                        <a href="/?add_to_cart={{ item[0] }}">Add to Cart</a>
+                    </div>
                 </li>
                 {% endfor %}
             </ul>
 
             <!-- Add New Item -->
             <h3>Add Item</h3>
-            <form method="POST">
+            <form method="POST" enctype="multipart/form-data">
                 <input type="hidden" name="action" value="add_item">
                 <label>Name: <input type="text" name="name" required></label><br>
                 <label>Price: <input type="number" step="0.01" name="price" required></label><br>
+                <label>Image: <input type="file" name="image" accept="image/*"></label><br>
                 <button type="submit">Add Item</button>
             </form>
         </div>
@@ -42,4 +56,5 @@
     </div>
 </body>
 </html>
+
 
