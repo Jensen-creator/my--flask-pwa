@@ -1,66 +1,135 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f9f9f9;
-    margin: 20px;
+    margin: 0;
+    background-color: #f5f5f5;
 }
 
-h1 {
+header {
+    background-color: #28a745;
+    color: white;
+    padding: 20px;
     text-align: center;
-    color: #333;
 }
 
-.container {
+.search-bar {
+    margin-top: 10px;
+}
+
+.search-bar input[type="text"] {
+    padding: 5px;
+    width: 200px;
+    border-radius: 5px;
+    border: none;
+}
+
+.search-bar button {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #28a745;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+main {
     display: flex;
     justify-content: space-between;
-    gap: 50px;
-    margin-top: 20px;
+    padding: 20px;
+    gap: 20px;
 }
 
-ul {
+.items {
+    flex: 3;
+}
+
+.cart {
+    flex: 1;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    height: fit-content;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.item-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 20px;
+}
+
+.item-card {
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+}
+
+.item-card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.item-card h3 {
+    margin: 10px 0 5px 0;
+}
+
+.item-card p {
+    margin: 0 0 10px 0;
+}
+
+.button {
+    padding: 5px 10px;
+    background-color: #28a745;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.button:hover {
+    background-color: #218838;
+}
+
+.add-form input[type="text"],
+.add-form input[type="number"],
+.add-form input[type="file"] {
+    width: 100%;
+    margin-bottom: 5px;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.add-form button {
+    width: 100%;
+    padding: 8px;
+    border: none;
+    background-color: #28a745;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.add-form button:hover {
+    background-color: #218838;
+}
+
+.cart ul {
     list-style: none;
     padding: 0;
 }
 
-li {
-    background-color: #fff;
+.cart li {
     margin-bottom: 10px;
-    padding: 10px;
-    border-radius: 5px;
-    box-shadow: 0 0 5px rgba(0,0,0,0.1);
     display: flex;
-    align-items: center;
-    gap: 10px;
+    justify-content: space-between;
 }
 
-img {
-    border-radius: 5px;
-}
-
-form {
-    background-color: #fff;
-    padding: 15px;
-    border-radius: 5px;
-    box-shadow: 0 0 5px rgba(0,0,0,0.1);
-    margin-top: 10px;
-}
-
-input[type="text"], input[type="number"], input[type="file"] {
-    padding: 5px;
-    margin: 5px 0;
-    width: 100%;
-    box-sizing: border-box;
-}
-
-button {
-    padding: 8px 12px;
-    background-color: #28a745;
-    border: none;
-    color: white;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 5px;
-}
-
-button:hover {
-    background-color: #218838;
+.cart a.remove {
+    color: red;
+    text-decoration: none;
+    font-weight: bold;
 }
