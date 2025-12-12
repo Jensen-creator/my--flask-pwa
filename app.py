@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, session
 import sqlite3
 
 app = Flask(__name__)
-app.secret_key = "your_secret_key"
+app.secret_key = "your_secret_key"  # Required for session
 
 # Initialize database
 def init_db():
@@ -22,14 +22,18 @@ init_db()
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    # Handle adding a new item
+    # Handle adding a new item safely
     if request.method == 'POST' and request.form.get('action') == 'add_item':
         name = request.form.get('name')
         price = request.form.get('price')
         if name and price:
+            try:
+                price = float(price)
+            except ValueError:
+                return "Invalid price! Please enter a number.", 400
             conn = sqlite3.connect('shop.db')
             c = conn.cursor()
-            c.execute('INSERT INTO items (name, price) VALUES (?, ?)', (name, float(price)))
+            c.execute('INSERT INTO items (name, price) VALUES (?, ?)', (name, price))
             conn.commit()
             conn.close()
         return redirect('/')
