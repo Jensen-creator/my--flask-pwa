@@ -26,7 +26,12 @@
                     {% endif %}
                     <div class="cart-details">
                         <h3>{{ item.name }}</h3>
-                        <p class="price">${{ "%.2f"|format(item.price) }}</p>
+                        <p>Price: ${{ "%.2f"|format(item.price) }}</p>
+                        <div class="quantity-container">
+                            <label>Qty:</label>
+                            <input type="number" value="1" min="1" class="quantity-input">
+                        </div>
+                        <p>Subtotal: $<span class="subtotal">{{ "%.2f"|format(item.price) }}</span></p>
                         <a href="{{ url_for('remove_from_cart', item_id=item.id) }}" class="remove-button">Remove</a>
                     </div>
                 </div>
@@ -36,8 +41,8 @@
             <!-- Right Column: Summary -->
             <div class="cart-summary">
                 <h2>Order Summary</h2>
-                <p>Total Items: {{ cart_items|length }}</p>
-                <p class="total-amount">Total: ${{ "%.2f"|format(total) }}</p>
+                <p>Total Items: <span id="total-items">{{ cart_items|length }}</span></p>
+                <p class="total-amount">Total: $<span id="total-amount">{{ "%.2f"|format(total) }}</span></p>
                 <button class="checkout-button">Proceed to Checkout</button>
             </div>
         </div>
@@ -45,6 +50,29 @@
         <p class="empty-cart">Your cart is empty.</p>
         {% endif %}
     </main>
+
+    <script>
+        // Update subtotal and total dynamically
+        const quantityInputs = document.querySelectorAll('.quantity-input');
+        const subtotals = document.querySelectorAll('.subtotal');
+        const totalAmount = document.getElementById('total-amount');
+
+        function updateTotals() {
+            let total = 0;
+            quantityInputs.forEach((input, index) => {
+                const price = parseFloat(subtotals[index].textContent);
+                const qty = parseInt(input.value);
+                const newSubtotal = price * qty;
+                subtotals[index].textContent = newSubtotal.toFixed(2);
+                total += newSubtotal;
+            });
+            totalAmount.textContent = total.toFixed(2);
+        }
+
+        quantityInputs.forEach(input => {
+            input.addEventListener('change', updateTotals);
+        });
+    </script>
 </body>
 </html>
 
