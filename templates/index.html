@@ -2,18 +2,47 @@
 <html>
 <head>
     <title>Mini Shop</title>
+    <style>
+        body { font-family: Arial; margin: 20px; }
+        .container { display: flex; gap: 50px; }
+        ul { list-style: none; padding: 0; }
+    </style>
 </head>
 <body>
-    <h1>Items for Sale</h1>
-    <a href="/add_item">Add New Item</a> |
-    <a href="/cart">View Cart ({{ cart|length }})</a>
-    <ul>
-        {% for item in items %}
-        <li>
-            {{ item[1] }} - ${{ "%.2f"|format(item[2]) }}
-            <a href="/add_to_cart/{{ item[0] }}">Add to Cart</a>
-        </li>
-        {% endfor %}
-    </ul>
+    <h1>Mini Shop</h1>
+    <div class="container">
+        <!-- Items for Sale -->
+        <div>
+            <h2>Items for Sale</h2>
+            <ul>
+                {% for item in items %}
+                <li>
+                    {{ item[1] }} - ${{ "%.2f"|format(item[2]) }}
+                    <a href="/?add_to_cart={{ item[0] }}">Add to Cart</a>
+                </li>
+                {% endfor %}
+            </ul>
+
+            <!-- Add New Item -->
+            <h3>Add Item</h3>
+            <form method="POST">
+                <input type="hidden" name="action" value="add_item">
+                <label>Name: <input type="text" name="name" required></label><br>
+                <label>Price: <input type="number" step="0.01" name="price" required></label><br>
+                <button type="submit">Add Item</button>
+            </form>
+        </div>
+
+        <!-- Shopping Cart -->
+        <div>
+            <h2>Shopping Cart</h2>
+            <ul>
+                {% for item in cart_items %}
+                <li>{{ item[1] }} - ${{ "%.2f"|format(item[2]) }}</li>
+                {% endfor %}
+            </ul>
+            <h3>Total: ${{ "%.2f"|format(total) }}</h3>
+        </div>
+    </div>
 </body>
 </html>
