@@ -1,3 +1,4 @@
+from flask import Flask, render_template, request, redirect, session
 import sqlite3
 
 app = Flask(__name__)
@@ -21,7 +22,7 @@ init_db()
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    # Handle adding a new item (form submission)
+    # Handle adding a new item
     if request.method == 'POST' and request.form.get('action') == 'add_item':
         name = request.form.get('name')
         price = request.form.get('price')
@@ -33,7 +34,7 @@ def index():
             conn.close()
         return redirect('/')
 
-    # Handle adding to cart via query param
+    # Handle adding to cart
     item_id = request.args.get('add_to_cart')
     if item_id:
         cart = session.get('cart', [])
@@ -41,27 +42,24 @@ def index():
         session['cart'] = cart
         return redirect('/')
 
-    # Fetch items and cart info
+    # Fetch items and cart info (single connection)
     conn = sqlite3.connect('shop.db')
     c = conn.cursor()
     c.execute('SELECT * FROM items')
     items = c.fetchall()
-    conn.close()
 
     cart = session.get('cart', [])
     cart_items = []
     total = 0
-    conn = sqlite3.connect('shop.db')
-    c = conn.cursor()
     for i in cart:
         c.execute('SELECT * FROM items WHERE id=?', (i,))
         item = c.fetchone()
         if item:
             cart_items.append(item)
             total += item[2]
-    conn.close()
 
+    conn.close()
     return render_template('index.html', items=items, cart_items=cart_items, total=total)
-    
+
 if __name__ == '__main__':
     app.run(debug=True)
