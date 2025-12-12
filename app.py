@@ -6,7 +6,6 @@ from werkzeug.utils import secure_filename
 app = Flask(__name__)
 app.secret_key = "your_secret_key"
 
-# Image upload configuration
 UPLOAD_FOLDER = 'static/uploads'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -39,7 +38,7 @@ def index():
     conn = sqlite3.connect('shop.db')
     c = conn.cursor()
 
-    # Handle new item submission
+    # Add new item
     if request.method == 'POST' and request.form.get('action') == 'add_item':
         name = request.form.get('name')
         price = request.form.get('price')
@@ -61,7 +60,7 @@ def index():
             conn.commit()
         return redirect('/')
 
-    # Handle adding to cart
+    # Add to cart
     item_id = request.args.get('add_to_cart')
     if item_id:
         cart = session.get('cart', [])
@@ -69,7 +68,17 @@ def index():
         session['cart'] = cart
         return redirect('/')
 
-    # Handle search
+    # Remove from cart
+    remove_id = request.args.get('remove_from_cart')
+    if remove_id:
+        cart = session.get('cart', [])
+        remove_id = int(remove_id)
+        if remove_id in cart:
+            cart = [i for i in cart if i != remove_id]
+            session['cart'] = cart
+        return redirect('/')
+
+    # Search items
     search_query = request.args.get('search')
     if search_query:
         c.execute("SELECT * FROM items WHERE name LIKE ?", ('%' + search_query + '%',))
@@ -77,7 +86,7 @@ def index():
         c.execute("SELECT * FROM items")
     items = c.fetchall()
 
-    # Fetch cart items
+    # Get cart items
     cart = session.get('cart', [])
     cart_items = []
     total = 0
