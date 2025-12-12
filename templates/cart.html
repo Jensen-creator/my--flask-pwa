@@ -9,30 +9,37 @@
 <body>
     <header>
         <h1>Your Shopping Cart</h1>
-        <a href="{{ url_for('index') }}" class="cart-button">← Continue Shopping</a>
+        <a href="{{ url_for('index') }}" class="back-button">← Continue Shopping</a>
     </header>
 
     <main class="cart-page">
         {% if cart_items %}
-        <div class="cart-grid">
-            {% for item in cart_items %}
-            <div class="cart-card">
-                {% if item.image %}
-                <img src="{{ url_for('static', filename='uploads/' ~ item.image) }}" alt="{{ item.name }}">
-                {% else %}
-                <img src="{{ url_for('static', filename='uploads/default.png') }}" alt="No Image">
-                {% endif %}
-                <div class="cart-details">
-                    <h3>{{ item.name }}</h3>
-                    <p class="price">${{ "%.2f"|format(item.price) }}</p>
-                    <a href="{{ url_for('remove_from_cart', item_id=item.id) }}" class="remove-button">Remove</a>
+        <div class="cart-container">
+            <!-- Left Column: Cart Items -->
+            <div class="cart-items">
+                {% for item in cart_items %}
+                <div class="cart-card">
+                    {% if item.image %}
+                    <img src="{{ url_for('static', filename='uploads/' ~ item.image) }}" alt="{{ item.name }}">
+                    {% else %}
+                    <img src="{{ url_for('static', filename='uploads/default.png') }}" alt="No Image">
+                    {% endif %}
+                    <div class="cart-details">
+                        <h3>{{ item.name }}</h3>
+                        <p class="price">${{ "%.2f"|format(item.price) }}</p>
+                        <a href="{{ url_for('remove_from_cart', item_id=item.id) }}" class="remove-button">Remove</a>
+                    </div>
                 </div>
+                {% endfor %}
             </div>
-            {% endfor %}
-        </div>
-        <div class="cart-total">
-            <h2>Total: ${{ "%.2f"|format(total) }}</h2>
-            <button class="checkout-button">Proceed to Checkout</button>
+
+            <!-- Right Column: Summary -->
+            <div class="cart-summary">
+                <h2>Order Summary</h2>
+                <p>Total Items: {{ cart_items|length }}</p>
+                <p class="total-amount">Total: ${{ "%.2f"|format(total) }}</p>
+                <button class="checkout-button">Proceed to Checkout</button>
+            </div>
         </div>
         {% else %}
         <p class="empty-cart">Your cart is empty.</p>
