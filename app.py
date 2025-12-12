@@ -47,8 +47,7 @@ def index():
 
         if image_file and allowed_file(image_file.filename):
             image_filename = secure_filename(image_file.filename)
-            image_path = os.path.join(app.config['UPLOAD_FOLDER'], image_filename)
-            image_file.save(image_path)
+            image_file.save(os.path.join(app.config['UPLOAD_FOLDER'], image_filename))
 
         if name and price:
             try:
@@ -68,16 +67,6 @@ def index():
         session['cart'] = cart
         return redirect('/')
 
-    # Remove from cart
-    remove_id = request.args.get('remove_from_cart')
-    if remove_id:
-        cart = session.get('cart', [])
-        remove_id = int(remove_id)
-        if remove_id in cart:
-            cart = [i for i in cart if i != remove_id]
-            session['cart'] = cart
-        return redirect('/')
-
     # Search items
     search_query = request.args.get('search')
     if search_query:
@@ -86,7 +75,14 @@ def index():
         c.execute("SELECT * FROM items")
     items = c.fetchall()
 
-    # Get cart items
+    conn.close()
+    return render_template('index.html', items=items)
+
+@app.route('/cart')
+def cart():
+    conn = sqlite3.connect('shop.db')
+    c = conn.cursor()
+
     cart = session.get('cart', [])
     cart_items = []
     total = 0
@@ -98,7 +94,15 @@ def index():
             total += item[2]
 
     conn.close()
-    return render_template('index.html', items=items, cart_items=cart_items, total=total)
+    return render_template('cart.html', cart_items=cart_items, total=total)
+
+@app.route('/cart/remove/<int:item_id>')
+def remove_from_cart(item_id):
+    cart = session.get('cart', [])
+    if item_id in cart:
+        cart = [i for i in cart if i != item_id]
+        session['cart'] = cart
+    return redirect(url_for('cart'))
 
 if __name__ == '__main__':
     app.run(debug=True)
