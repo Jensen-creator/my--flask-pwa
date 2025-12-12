@@ -17,15 +17,15 @@
         <div class="cart-grid">
             {% for item in cart_items %}
             <div class="cart-card">
-                {% if item[3] %}
-                <img src="{{ url_for('static', filename='uploads/' ~ item[3]) }}" alt="{{ item[1] }}">
+                {% if item.image %}
+                <img src="{{ url_for('static', filename='uploads/' ~ item.image) }}" alt="{{ item.name }}">
                 {% else %}
                 <img src="{{ url_for('static', filename='uploads/default.png') }}" alt="No Image">
                 {% endif %}
                 <div class="cart-details">
-                    <h3>{{ item[1] }}</h3>
-                    <p class="price">${{ "%.2f"|format(item[2]) }}</p>
-                    <a href="{{ url_for('remove_from_cart', item_id=item[0]) }}" class="remove-button">Remove</a>
+                    <h3>{{ item.name }}</h3>
+                    <p class="price">${{ "%.2f"|format(item.price) }}</p>
+                    <a href="{{ url_for('remove_from_cart', item_id=item.id) }}" class="remove-button">Remove</a>
                 </div>
             </div>
             {% endfor %}
@@ -40,3 +40,4 @@
     </main>
 </body>
 </html>
+
