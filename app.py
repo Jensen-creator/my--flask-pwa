@@ -1,14 +1,12 @@
-from flask import Flask, render_template, request, redirect, session
 import sqlite3
 
 app = Flask(__name__)
-app.secret_key = "your_secret_key"  # Needed for session
+app.secret_key = "your_secret_key"
 
-# Initialize the database
+# Initialize database
 def init_db():
     conn = sqlite3.connect('shop.db')
     c = conn.cursor()
-    # Table for items
     c.execute('''
         CREATE TABLE IF NOT EXISTS items (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -21,21 +19,10 @@ def init_db():
 
 init_db()
 
-# Home page: show items for sale
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
-    conn = sqlite3.connect('shop.db')
-    c = conn.cursor()
-    c.execute('SELECT * FROM items')
-    items = c.fetchall()
-    conn.close()
-    cart = session.get('cart', [])
-    return render_template('index.html', items=items, cart=cart)
-
-# Add a new item to sell
-@app.route('/add_item', methods=['GET', 'POST'])
-def add_item():
-    if request.method == 'POST':
+    # Handle adding a new item (form submission)
+    if request.method == 'POST' and request.form.get('action') == 'add_item':
         name = request.form.get('name')
         price = request.form.get('price')
         if name and price:
@@ -44,33 +31,37 @@ def add_item():
             c.execute('INSERT INTO items (name, price) VALUES (?, ?)', (name, float(price)))
             conn.commit()
             conn.close()
-            return redirect('/')
-    return render_template('add_item.html')
+        return redirect('/')
 
-# Add item to cart
-@app.route('/add_to_cart/<int:item_id>')
-def add_to_cart(item_id):
-    cart = session.get('cart', [])
-    cart.append(item_id)
-    session['cart'] = cart
-    return redirect('/')
+    # Handle adding to cart via query param
+    item_id = request.args.get('add_to_cart')
+    if item_id:
+        cart = session.get('cart', [])
+        cart.append(int(item_id))
+        session['cart'] = cart
+        return redirect('/')
 
-# View cart
-@app.route('/cart')
-def cart():
-    cart = session.get('cart', [])
+    # Fetch items and cart info
     conn = sqlite3.connect('shop.db')
     c = conn.cursor()
-    items_in_cart = []
+    c.execute('SELECT * FROM items')
+    items = c.fetchall()
+    conn.close()
+
+    cart = session.get('cart', [])
+    cart_items = []
     total = 0
-    for item_id in cart:
-        c.execute('SELECT * FROM items WHERE id = ?', (item_id,))
+    conn = sqlite3.connect('shop.db')
+    c = conn.cursor()
+    for i in cart:
+        c.execute('SELECT * FROM items WHERE id=?', (i,))
         item = c.fetchone()
         if item:
-            items_in_cart.append(item)
-            total += item[2]  # price
+            cart_items.append(item)
+            total += item[2]
     conn.close()
-    return render_template('cart.html', items=items_in_cart, total=total)
 
+    return render_template('index.html', items=items, cart_items=cart_items, total=total)
+    
 if __name__ == '__main__':
     app.run(debug=True)
