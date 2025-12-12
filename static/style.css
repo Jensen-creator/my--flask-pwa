@@ -1,18 +1,14 @@
-/* General body styling */
 body {
     font-family: Arial, sans-serif;
     background-color: #f9f9f9;
-    margin: 0;
-    padding: 20px;
+    margin: 20px;
 }
 
-/* Main title */
 h1 {
     text-align: center;
     color: #333;
 }
 
-/* Container for items and cart */
 .container {
     display: flex;
     justify-content: space-between;
@@ -20,14 +16,6 @@ h1 {
     margin-top: 20px;
 }
 
-/* Card styling for sections */
-div > h2 {
-    border-bottom: 2px solid #ddd;
-    padding-bottom: 5px;
-    margin-bottom: 10px;
-}
-
-/* Lists */
 ul {
     list-style: none;
     padding: 0;
@@ -35,8 +23,44 @@ ul {
 
 li {
     background-color: #fff;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
     padding: 10px;
     border-radius: 5px;
-    box-shadow: 0 0 5px rgba(
+    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
 
+img {
+    border-radius: 5px;
+}
+
+form {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    margin-top: 10px;
+}
+
+input[type="text"], input[type="number"], input[type="file"] {
+    padding: 5px;
+    margin: 5px 0;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+button {
+    padding: 8px 12px;
+    background-color: #28a745;
+    border: none;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 5px;
+}
+
+button:hover {
+    background-color: #218838;
+}
