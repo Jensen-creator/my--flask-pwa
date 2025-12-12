@@ -231,6 +231,8 @@ main {
     padding: 20px;
     height: fit-content;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 20px;
 }
 
 .cart-summary h2 {
@@ -266,6 +268,7 @@ main {
     transform: translateY(-2px);
 }
 
+/* Cart card layout */
 .cart-card {
     display: flex;
     flex-direction: row;
@@ -274,6 +277,7 @@ main {
     overflow: hidden;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     transition: transform 0.2s;
+    gap: 10px;
 }
 
 .cart-card:hover {
@@ -288,11 +292,12 @@ main {
     border-radius: 10px 0 0 10px;
 }
 
+/* Cart details layout */
 .cart-details {
-    padding: 15px;
+    padding: 10px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-start;
     gap: 5px;
     flex: 1;
 }
@@ -302,12 +307,32 @@ main {
     font-size: 18px;
 }
 
-.cart-details .price {
+.cart-details .price,
+.cart-details p {
     font-size: 16px;
+    color: #333;
+}
+
+.subtotal {
     font-weight: bold;
     color: #28a745;
 }
 
+/* Quantity selector */
+.quantity-container {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.quantity-input {
+    width: 50px;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+/* Remove button */
 .remove-button {
     background-color: #dc3545;
     color: white;
@@ -339,7 +364,6 @@ main {
 @media screen and (max-width: 768px) {
     main, .cart-container {
         flex-direction: column;
-        padding: 10px;
     }
 
     .search-bar input[type="text"] {
@@ -351,7 +375,9 @@ main {
     }
 
     .cart-summary {
+        position: static;
         width: 100%;
+        margin-top: 20px;
     }
 
     .cart-card {
