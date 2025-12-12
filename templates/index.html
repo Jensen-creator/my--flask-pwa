@@ -1,22 +1,27 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Mini Online Shop</title>
-    <!-- Mobile viewport -->
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Mini Online Shop</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <header>
         <h1>Mini Online Shop</h1>
-        <form method="GET" class="search-bar">
-            <input type="text" name="search" placeholder="Search items..." value="{{ request.args.get('search') }}">
-            <button type="submit">Search</button>
-        </form>
+        <div class="header-buttons">
+            <!-- Search Bar -->
+            <form method="GET" class="search-bar">
+                <input type="text" name="search" placeholder="Search items..." value="{{ request.args.get('search') }}">
+                <button type="submit">Search</button>
+            </form>
+            <!-- Cart Button -->
+            <a href="{{ url_for('cart') }}" class="cart-button">🛒 Cart</a>
+        </div>
     </header>
 
     <main>
-        <!-- Items for Sale -->
+        <!-- Items Section -->
         <section class="items">
             <h2>Items for Sale</h2>
             <div class="item-grid">
@@ -34,6 +39,7 @@
                 {% endfor %}
             </div>
 
+            <!-- Add Item Form -->
             <h3>Add New Item</h3>
             <form method="POST" enctype="multipart/form-data" class="add-form">
                 <input type="hidden" name="action" value="add_item">
@@ -43,24 +49,7 @@
                 <button type="submit">Add Item</button>
             </form>
         </section>
-
-        <!-- Shopping Cart -->
-        <section class="cart">
-            <h2>Shopping Cart</h2>
-            {% if cart_items %}
-            <ul>
-                {% for item in cart_items %}
-                <li>
-                    {{ item[1] }} - ${{ "%.2f"|format(item[2]) }}
-                    <a href="/?remove_from_cart={{ item[0] }}" class="remove">Remove</a>
-                </li>
-                {% endfor %}
-            </ul>
-            <h3>Total: ${{ "%.2f"|format(total) }}</h3>
-            {% else %}
-            <p>Your cart is empty.</p>
-            {% endif %}
-        </section>
     </main>
 </body>
 </html>
+
