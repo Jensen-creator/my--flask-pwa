@@ -2,54 +2,51 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mini Online Shop</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <header>
-        <h1>Mini Online Shop</h1>
+        <h1>My Shop</h1>
         <div class="header-buttons">
-            <!-- Search Bar -->
-            <form method="GET" class="search-bar">
-                <input type="text" name="search" placeholder="Search items..." value="{{ request.args.get('search') }}">
+            <form action="/" method="get" class="search-bar">
+                <input type="text" name="search" placeholder="Search items...">
                 <button type="submit">Search</button>
             </form>
-            <!-- Cart Button -->
             <a href="{{ url_for('cart') }}" class="cart-button">🛒 Cart</a>
         </div>
     </header>
 
     <main>
-        <!-- Items Section -->
-        <section class="items">
-            <h2>Items for Sale</h2>
+        <div class="items">
             <div class="item-grid">
                 {% for item in items %}
                 <div class="item-card">
-                    {% if item[3] %}
-                    <img src="{{ url_for('static', filename='uploads/' ~ item[3]) }}" alt="{{ item[1] }}">
+                    {% if item['image'] %}
+                    <img src="{{ url_for('static', filename='uploads/' ~ item['image']) }}" alt="{{ item['name'] }}">
                     {% else %}
                     <img src="{{ url_for('static', filename='uploads/default.png') }}" alt="No Image">
                     {% endif %}
-                    <h3>{{ item[1] }}</h3>
-                    <p>${{ "%.2f"|format(item[2]) }}</p>
-                    <a class="button" href="/?add_to_cart={{ item[0] }}">Add to Cart</a>
+                    <h3>{{ item['name'] }}</h3>
+                    <p>${{ "%.2f"|format(item['price']) }}</p>
+                    <a href="{{ url_for('index', add_to_cart=item['id']) }}" class="button">Add to Cart</a>
                 </div>
                 {% endfor %}
             </div>
 
             <!-- Add Item Form -->
-            <h3>Add New Item</h3>
-            <form method="POST" enctype="multipart/form-data" class="add-form">
+            <form action="/" method="post" enctype="multipart/form-data" class="add-form">
+                <h2>Add New Item</h2>
                 <input type="hidden" name="action" value="add_item">
                 <input type="text" name="name" placeholder="Item Name" required>
                 <input type="number" step="0.01" name="price" placeholder="Price" required>
-                <input type="file" name="image" accept="image/*">
+                <input type="file" name="image">
                 <button type="submit">Add Item</button>
             </form>
-        </section>
+        </div>
     </main>
 </body>
 </html>
+
 
