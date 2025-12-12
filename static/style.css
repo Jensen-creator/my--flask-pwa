@@ -1,3 +1,4 @@
+/* General styling */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -11,25 +12,35 @@ header {
     text-align: center;
 }
 
+header h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
 .search-bar {
     margin-top: 10px;
+    display: flex;
+    justify-content: center;
 }
 
 .search-bar input[type="text"] {
-    padding: 5px;
-    width: 200px;
-    border-radius: 5px;
+    padding: 8px;
+    width: 60%;
+    max-width: 300px;
+    border-radius: 5px 0 0 5px;
     border: none;
+    font-size: 16px;
 }
 
 .search-bar button {
-    padding: 5px 10px;
+    padding: 8px 12px;
     border: none;
-    border-radius: 5px;
+    border-radius: 0 5px 5px 0;
     background-color: #fff;
     color: #28a745;
     cursor: pointer;
     font-weight: bold;
+    font-size: 16px;
 }
 
 main {
@@ -37,12 +48,16 @@ main {
     justify-content: space-between;
     padding: 20px;
     gap: 20px;
+    flex-wrap: wrap;
 }
 
+/* Items section */
 .items {
     flex: 3;
+    min-width: 250px;
 }
 
+/* Cart section */
 .cart {
     flex: 1;
     background-color: #fff;
@@ -50,20 +65,26 @@ main {
     border-radius: 5px;
     height: fit-content;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    min-width: 200px;
 }
 
+/* Grid for items */
 .item-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 15px;
 }
 
+/* Individual item card */
 .item-card {
     background-color: #fff;
     padding: 10px;
     border-radius: 5px;
     text-align: center;
     box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .item-card img {
@@ -74,49 +95,63 @@ main {
 }
 
 .item-card h3 {
-    margin: 10px 0 5px 0;
+    margin: 0;
+    font-size: 16px;
 }
 
 .item-card p {
-    margin: 0 0 10px 0;
+    margin: 0;
+    font-size: 14px;
+    color: #333;
 }
 
 .button {
-    padding: 5px 10px;
+    padding: 6px 10px;
     background-color: #28a745;
     color: white;
     text-decoration: none;
     border-radius: 5px;
+    font-size: 14px;
 }
 
 .button:hover {
     background-color: #218838;
 }
 
+/* Add item form */
+.add-form {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-top: 10px;
+}
+
 .add-form input[type="text"],
 .add-form input[type="number"],
 .add-form input[type="file"] {
-    width: 100%;
-    margin-bottom: 5px;
-    padding: 5px;
+    padding: 8px;
     border-radius: 5px;
     border: 1px solid #ccc;
+    font-size: 16px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .add-form button {
-    width: 100%;
-    padding: 8px;
+    padding: 10px;
     border: none;
     background-color: #28a745;
     color: white;
     border-radius: 5px;
     cursor: pointer;
+    font-size: 16px;
 }
 
 .add-form button:hover {
     background-color: #218838;
 }
 
+/* Cart list */
 .cart ul {
     list-style: none;
     padding: 0;
@@ -126,10 +161,31 @@ main {
     margin-bottom: 10px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }
 
 .cart a.remove {
     color: red;
     text-decoration: none;
     font-weight: bold;
+    font-size: 14px;
+}
+
+/* Responsive design */
+@media screen and (max-width: 768px) {
+    main {
+        flex-direction: column;
+    }
+
+    .search-bar input[type="text"] {
+        width: 70%;
+    }
+
+    .item-grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    }
+
+    .cart {
+        margin-top: 20px;
+    }
 }
