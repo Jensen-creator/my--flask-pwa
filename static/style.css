@@ -17,10 +17,18 @@ header h1 {
     font-size: 24px;
 }
 
-.search-bar {
-    margin-top: 10px;
+.header-buttons {
     display: flex;
     justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+/* Search bar */
+.search-bar {
+    display: flex;
+    align-items: center;
 }
 
 .search-bar input[type="text"] {
@@ -43,39 +51,40 @@ header h1 {
     font-size: 16px;
 }
 
+.cart-button {
+    padding: 8px 12px;
+    background-color: #fff;
+    color: #28a745;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.cart-button:hover {
+    background-color: #e6e6e6;
+}
+
+/* Main layout */
 main {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     padding: 20px;
-    gap: 20px;
-    flex-wrap: wrap;
 }
 
 /* Items section */
 .items {
-    flex: 3;
-    min-width: 250px;
+    width: 100%;
+    max-width: 1000px;
 }
 
-/* Cart section */
-.cart {
-    flex: 1;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 5px;
-    height: fit-content;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    min-width: 200px;
-}
-
-/* Grid for items */
+/* Item grid */
 .item-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
     gap: 15px;
 }
 
-/* Individual item card */
+/* Item cards */
 .item-card {
     background-color: #fff;
     padding: 10px;
@@ -118,7 +127,7 @@ main {
     background-color: #218838;
 }
 
-/* Add item form */
+/* Add Item Form */
 .add-form {
     display: flex;
     flex-direction: column;
@@ -151,30 +160,10 @@ main {
     background-color: #218838;
 }
 
-/* Cart list */
-.cart ul {
-    list-style: none;
-    padding: 0;
-}
-
-.cart li {
-    margin-bottom: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.cart a.remove {
-    color: red;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 14px;
-}
-
 /* Responsive design */
 @media screen and (max-width: 768px) {
     main {
-        flex-direction: column;
+        padding: 10px;
     }
 
     .search-bar input[type="text"] {
@@ -183,9 +172,5 @@ main {
 
     .item-grid {
         grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-    }
-
-    .cart {
-        margin-top: 20px;
     }
 }
