@@ -73,7 +73,9 @@ def index():
         c.execute("SELECT * FROM items WHERE name LIKE ?", ('%' + search_query + '%',))
     else:
         c.execute("SELECT * FROM items")
-    items = c.fetchall()
+    
+    # Convert tuples to dictionaries
+    items = [{"id": row[0], "name": row[1], "price": row[2], "image": row[3]} for row in c.fetchall()]
 
     conn.close()
     return render_template('index.html', items=items)
@@ -88,10 +90,11 @@ def cart():
     total = 0
     for i in cart:
         c.execute('SELECT * FROM items WHERE id=?', (i,))
-        item = c.fetchone()
-        if item:
+        row = c.fetchone()
+        if row:
+            item = {"id": row[0], "name": row[1], "price": row[2], "image": row[3]}
             cart_items.append(item)
-            total += item[2]
+            total += item["price"]
 
     conn.close()
     return render_template('cart.html', cart_items=cart_items, total=total)
@@ -106,3 +109,4 @@ def remove_from_cart(item_id):
 
 if __name__ == '__main__':
     app.run(debug=True)
+
