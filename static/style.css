@@ -1,48 +1,42 @@
+/* General body styling */
 body {
     font-family: Arial, sans-serif;
-    background: #f0f0f0;
-    max-width: 500px;
-    margin: 50px auto;
+    background-color: #f9f9f9;
+    margin: 0;
     padding: 20px;
-    background-color: #fff;
-    border-radius: 10px;
 }
 
+/* Main title */
 h1 {
     text-align: center;
-    color: #4CAF50;
+    color: #333;
 }
 
-form {
+/* Container for items and cart */
+.container {
     display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
+    justify-content: space-between;
+    gap: 50px;
+    margin-top: 20px;
 }
 
-input[type="text"] {
-    flex: 1;
-    padding: 10px;
-    font-size: 16px;
+/* Card styling for sections */
+div > h2 {
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
 }
 
-button {
-    padding: 10px 20px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    cursor: pointer;
-    font-size: 16px;
-    border-radius: 4px;
-}
-
+/* Lists */
 ul {
     list-style: none;
     padding: 0;
 }
 
 li {
+    background-color: #fff;
+    margin-bottom: 8px;
     padding: 10px;
-    background: #eee;
-    margin-bottom: 5px;
     border-radius: 5px;
-}
+    box-shadow: 0 0 5px rgba(
+
