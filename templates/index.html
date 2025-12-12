@@ -1,60 +1,64 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Mini Shop</title>
+    <title>Mini Online Shop</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Mini Shop</h1>
+    <header>
+        <h1>Mini Online Shop</h1>
+        <form method="GET" class="search-bar">
+            <input type="text" name="search" placeholder="Search items..." value="{{ request.args.get('search') }}">
+            <button type="submit">Search</button>
+        </form>
+    </header>
 
-    <!-- Search bar -->
-    <form method="GET" style="margin-bottom: 20px;">
-        <input type="text" name="search" placeholder="Search items..." value="{{ request.args.get('search') }}">
-        <button type="submit">Search</button>
-    </form>
-
-    <div class="container">
+    <main>
         <!-- Items for Sale -->
-        <div>
+        <section class="items">
             <h2>Items for Sale</h2>
-            <ul>
+            <div class="item-grid">
                 {% for item in items %}
-                <li>
+                <div class="item-card">
                     {% if item[3] %}
-                    <img src="{{ url_for('static', filename='uploads/' ~ item[3]) }}" alt="{{ item[1] }}" width="100">
+                    <img src="{{ url_for('static', filename='uploads/' ~ item[3]) }}" alt="{{ item[1] }}">
+                    {% else %}
+                    <img src="{{ url_for('static', filename='uploads/default.png') }}" alt="No Image">
                     {% endif %}
-                    <div>
-                        <strong>{{ item[1] }}</strong><br>
-                        ${{ "%.2f"|format(item[2]) }}<br>
-                        <a href="/?add_to_cart={{ item[0] }}">Add to Cart</a>
-                    </div>
+                    <h3>{{ item[1] }}</h3>
+                    <p>${{ "%.2f"|format(item[2]) }}</p>
+                    <a class="button" href="/?add_to_cart={{ item[0] }}">Add to Cart</a>
+                </div>
+                {% endfor %}
+            </div>
+
+            <h3>Add New Item</h3>
+            <form method="POST" enctype="multipart/form-data" class="add-form">
+                <input type="hidden" name="action" value="add_item">
+                <input type="text" name="name" placeholder="Item Name" required>
+                <input type="number" step="0.01" name="price" placeholder="Price" required>
+                <input type="file" name="image" accept="image/*">
+                <button type="submit">Add Item</button>
+            </form>
+        </section>
+
+        <!-- Shopping Cart -->
+        <section class="cart">
+            <h2>Shopping Cart</h2>
+            {% if cart_items %}
+            <ul>
+                {% for item in cart_items %}
+                <li>
+                    {{ item[1] }} - ${{ "%.2f"|format(item[2]) }}
+                    <a href="/?remove_from_cart={{ item[0] }}" class="remove">Remove</a>
                 </li>
                 {% endfor %}
             </ul>
-
-            <!-- Add New Item -->
-            <h3>Add Item</h3>
-            <form method="POST" enctype="multipart/form-data">
-                <input type="hidden" name="action" value="add_item">
-                <label>Name: <input type="text" name="name" required></label><br>
-                <label>Price: <input type="number" step="0.01" name="price" required></label><br>
-                <label>Image: <input type="file" name="image" accept="image/*"></label><br>
-                <button type="submit">Add Item</button>
-            </form>
-        </div>
-
-        <!-- Shopping Cart -->
-        <div>
-            <h2>Shopping Cart</h2>
-            <ul>
-                {% for item in cart_items %}
-                <li>{{ item[1] }} - ${{ "%.2f"|format(item[2]) }}</li>
-                {% endfor %}
-            </ul>
             <h3>Total: ${{ "%.2f"|format(total) }}</h3>
-        </div>
-    </div>
+            {% else %}
+            <p>Your cart is empty.</p>
+            {% endif %}
+        </section>
+    </main>
 </body>
 </html>
-
-
